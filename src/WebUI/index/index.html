@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn1" class="btn">測試</button>
+
+    <script defer>
+        window.electron.receive('test-response', (response) => {
+            console.log('收到主進程回應:', response);
+        });
+
+        document.querySelector('#btn1').addEventListener('click', async () => {
+            console.log('按鈕被點擊');
+
+            const result = await window.electron.invoke('test-reply');
+            console.log('使用 invoke 收到回應:', result);
+                
+            // 方法二：使用 send/receive
+            window.electron.send('test-click', '測試數據');
+        });
+    </script>
+</body>
+</html>
