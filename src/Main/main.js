@@ -6,6 +6,10 @@ const { app, BrowserWindow, dialog, ipcMain, globalShortcut } = require('electro
 
 let mainWindow;
 
+const UIrouter = {
+    main: './webUI/index/index.html'
+}
+
 /**
     視窗設定1
 */
@@ -46,12 +50,13 @@ const keyReg = () => {
 }
 
 (async () => {
-    app.on('ready', () => { app.locale = 'zh-TW'; });
-    await app.whenReady();
+    
 
+    app.on('ready', () => { app.locale = 'zh-TW'; });   // 設定語言
+    await app.whenReady();                      // 等待app準備好
     mainWindow = new BrowserWindow(windowSetting1);
-    await mainWindow.loadFile('./webUI/index/index.html');  // 開啟主視窗
-    mainWindow.webContents.openDevTools();
+    await mainWindow.loadFile(UIrouter.main);   // 開啟主視窗
+    mainWindow.webContents.openDevTools();      // 開啟開發模式
 
     keyReg();  // 按鍵註冊
 
@@ -62,11 +67,9 @@ const keyReg = () => {
         };
     });
 
-    // 處理 send/on 方式的事件
     ipcMain.on('test-click', (event, data) => {
         console.log('收到渲染進程的數據:', data);
-        
-        // 使用 event.reply 回應到渲染進程
+
         event.reply('test-response', {
             status: 'success',
             data: '這是 send/on 的回應',
