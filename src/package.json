@@ -4,14 +4,31 @@
   "main": "./Main/main.js",
   "scripts": {
     "start": "chcp 65001 && electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pack": "electron-builder --dir",
+		"pack-dist": "electron-builder"
   },
+  "build": {
+		"appId": "com.example.app",
+		"productName": "LiveChatOnline",
+		"directories": {
+			"output": "pack"
+		},
+		"files": [
+			"**/*",
+			"!.vscode",
+			"build/"
+		],
+		"asar": false
+	},
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "it's a app",
   "devDependencies": {
-    "electron": "^33.2.1"
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8"
   },
-  "charset": "UTF-8"
+  "charset": "UTF-8",
+  "dependencies": {}
 }
