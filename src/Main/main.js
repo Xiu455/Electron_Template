@@ -35,28 +35,39 @@ const windowSetting1 = {
 const keyReg = () => {
     let openDevToolsflag = false;
 
-    // F11註冊為 開啟/關閉 開發模式
-    globalShortcut.register('F11', () => {
-        openDevToolsflag = !openDevToolsflag;
-        openDevToolsflag?
-            mainWindow.webContents.openDevTools() :
-            mainWindow.webContents.closeDevTools();
-    });
+    /* 
+    // 全域快捷鍵註冊
+    // globalShortcut.register('KeyName', () => {
+    //     if (mainWindow.isFocused()){
+    //         // 聚焦觸發
+    //     }
+    // });
+    */
 
-    // F5註冊為 '畫面刷新'
-    globalShortcut.register('F5', () => {
-        mainWindow.webContents.reload();
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+        if(input.type !== 'keyDown'){ return; }
+        switch(input.key){
+            case 'F5':  // 刷新畫面
+                event.preventDefault();
+                mainWindow.webContents.reload();
+                break;
+            case 'F11': // 開啟/關閉 開發模式
+                openDevToolsflag = !openDevToolsflag;
+                openDevToolsflag?
+                    mainWindow.webContents.openDevTools() :
+                    mainWindow.webContents.closeDevTools();
+                break;
+        }
     });
 }
 
 (async () => {
-    
-
     app.on('ready', () => { app.locale = 'zh-TW'; });   // 設定語言
     await app.whenReady();                      // 等待app準備好
+
     mainWindow = new BrowserWindow(windowSetting1);
     await mainWindow.loadFile(UIrouter.main);   // 開啟主視窗
-    mainWindow.webContents.openDevTools();      // 開啟開發模式
+    // mainWindow.webContents.openDevTools();      // 開啟開發模式
 
     keyReg();  // 按鍵註冊
 
