@@ -3,11 +3,12 @@
 const fs = require('fs');
 const { join, dirname, parse } = require('path');
 const { app, BrowserWindow, dialog, ipcMain, globalShortcut } = require('electron');
+const { spawn } = require('child_process');
 
 let mainWindow;
 
 const UIrouter = {
-    main: './webUI/index/index.html'
+    main: './webUI/index/index.html',
 }
 
 /**
@@ -27,6 +28,16 @@ const windowSetting1 = {
         enableRemoteModule: true,                               // 是否允許渲染進程中可以使用主進程的模組
     },
     autoHideMenuBar: true,                                      // 是否隱藏選單
+}
+
+function restartApp() {
+    const args = process.argv.slice(1);
+    spawn(process.argv[0], args, {
+        cwd: process.cwd(),
+        detached: true,
+        stdio: 'inherit', // 繼承輸出，保持終端連接
+    }).unref();
+    app.exit();
 }
 
 /**
@@ -51,7 +62,12 @@ const keyReg = () => {
                 event.preventDefault();
                 mainWindow.webContents.reload();
                 break;
-            case 'F11': // 開啟/關閉 開發模式
+            case 'F6':
+                event.preventDefault();
+                console.log('重啟應用');
+                restartApp();
+                break;
+            case 'F12': // 開啟/關閉 開發模式
                 openDevToolsflag = !openDevToolsflag;
                 openDevToolsflag?
                     mainWindow.webContents.openDevTools() :
