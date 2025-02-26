@@ -7,8 +7,9 @@ const { spawn } = require('child_process');
 
 let mainWindow;
 
+
 const UIrouter = {
-    main: './webUI/index/index.html',
+    main: './webUI/index/index.html', 
 }
 
 /**
