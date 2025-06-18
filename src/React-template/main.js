@@ -2,18 +2,12 @@
 
 const fs = require('fs');
 const { join, dirname, parse } = require('path');
-const { app, BrowserWindow, dialog, ipcMain, globalShortcut } = require('electron');
 const { spawn } = require('child_process');
+
+const { app, BrowserWindow, dialog, ipcMain, globalShortcut } = require('electron');
 
 let mainWindow;
 
-const UIrouter = {
-    main: './webUI/index/index.html', 
-}
-
-/**
-    視窗設定1
-*/
 const windowSetting1 = {
     width: 1000,                                                // 視窗預設寬度
     height: 600,                                                // 視窗預設高度
@@ -41,15 +35,6 @@ function restartApp() {
 const keyReg = () => {
     let openDevToolsflag = false;
 
-    /* 
-    // 全域快捷鍵註冊
-    // globalShortcut.register('KeyName', () => {
-    //     if (mainWindow.isFocused()){
-    //         // 聚焦觸發
-    //     }
-    // });
-    */
-
     mainWindow.webContents.on('before-input-event', (event, input) => {
         if(input.type !== 'keyDown'){ return; }
         switch(input.key){
@@ -73,12 +58,17 @@ const keyReg = () => {
 }
 
 (async () => {
+    const isDev = await import('electron-is-dev').then(mod => mod.default);
+
     app.on('ready', () => { app.locale = 'zh-TW'; });   // 設定語言
     await app.whenReady();                      // 等待app準備好
 
     mainWindow = new BrowserWindow(windowSetting1);
-    await mainWindow.loadFile(UIrouter.main);   // 開啟主視窗
-    // mainWindow.webContents.openDevTools();      // 開啟開發模式
+    if(isDev){
+        await mainWindow.loadURL('http://localhost:3000/');
+    }else{
+        await mainWindow.loadFile('dist/renderer/index.html');
+    }
 
     keyReg();  // 按鍵註冊
 
@@ -103,5 +93,3 @@ const keyReg = () => {
         if(process.platform !== 'darwin') app.quit();
     });
 })();
-
-// mainWindow.webContents.openDevTools();  //開發模式
