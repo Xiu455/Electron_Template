@@ -1,4 +1,4 @@
-# Electron模板
+# Electron Basic 模板
 
 | 依賴項 | 安裝指令 | 說明 |
 | --- | --- | --- |
@@ -50,3 +50,17 @@
   "dependencies": {  }
 }
 ```
+
+# Electron React 模板
+
+| 依賴項 | 安裝指令 | 說明 |
+| --- | --- | --- |
+| Electron | ```npx create-react-app my-app``` | 建置React |
+| Electron |```npm install --save-dev electron```| Electron安裝 |
+| Electron Builder | ```npm install electron-builder --dev``` | Electron打包(需要管理員權限) |
+|  |```npm install --save electron-is-dev```| 辨別是否為開發狀態 |
+|  |```npm install --save wait-on```| 等待服務是否啟動 |
+
+
+## 相關網址
+- [Electron-React教學](https://weirenxue.github.io/2021/08/04/react_electron_build/)

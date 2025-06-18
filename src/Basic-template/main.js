@@ -7,7 +7,6 @@ const { spawn } = require('child_process');
 
 let mainWindow;
 
-
 const UIrouter = {
     main: './webUI/index/index.html', 
 }
@@ -32,12 +31,7 @@ const windowSetting1 = {
 }
 
 function restartApp() {
-    const args = process.argv.slice(1);
-    spawn(process.argv[0], args, {
-        cwd: process.cwd(),
-        detached: true,
-        stdio: 'inherit', // 繼承輸出，保持終端連接
-    }).unref();
+    app.relaunch();
     app.exit();
 }
 

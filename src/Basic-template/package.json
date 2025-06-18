@@ -1,16 +1,15 @@
 {
   "name": "src",
   "version": "1.0.0",
-  "main": "./Main/main.js",
+  "main": "main.js",
   "scripts": {
     "start": "chcp 65001 && electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "electron-builder --dir",
     "pack-dist": "electron-builder"
   },
   "build": {
     "appId": "com.example.app",
-    "productName": "LiveChatOnline",
+    "productName": "Electron-Template",
     "directories": {
       "output": "pack"
     },
