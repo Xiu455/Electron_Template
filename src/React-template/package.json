@@ -6,8 +6,9 @@
     "react": "cd renderer && npx vite",
     "electron": "chcp 65001 && electron .",
     "dev": "concurrently \"npm:electron\" \"npm:react\"",
-    "build-react": "cd renderer && npx vite build",
-    "build": "cd renderer && npx vite build && cd ../ && electron-builder"
+    "vite:build": "cd renderer && npx vite build",
+    "build": "cd renderer && npx vite build && cd ../ && electron-builder",
+    "install:all": "npm install && cd renderer && npm install"
   },
   "build": {
     "appId": "com.example.app",
