@@ -1,8 +1,8 @@
 // @charset "UTF-8";
 
-const fs = require('fs');
-const { join, dirname, parse } = require('path');
-const { spawn } = require('child_process');
+// const fs = require('fs');
+const { join } = require('path');
+// const { spawn } = require('child_process');
 
 const { app, BrowserWindow, dialog, ipcMain, globalShortcut } = require('electron');
 
@@ -61,7 +61,7 @@ const keyReg = () => {
     const isDev = await import('electron-is-dev').then(mod => mod.default);
 
     app.on('ready', () => { app.locale = 'zh-TW'; });   // 設定語言
-    await app.whenReady();                      // 等待app準備好
+    await app.whenReady();  // 等待app準備好
 
     mainWindow = new BrowserWindow(windowSetting1);
     if(isDev){
@@ -72,6 +72,23 @@ const keyReg = () => {
 
     keyReg();  // 按鍵註冊
 
+    //主動發送通知
+    mainWindow.webContents.send('backend-notify', { message: '來自主進程的訊息' });
+
+    // 接收渲染進程的訊息 並回覆
+    ipcMain.on('send',(event, data) => {
+        console.log(`收到渲染進程的數據: ${new Date()}`);
+        console.log(data);
+
+        event.reply('backend-reply', {
+            status: 'success',
+            msg: '這是後端的回應',
+            receivedData: data
+        });
+    });
+
+    
+    // 接收渲染進程的訊息 並回覆
     ipcMain.handle('test-reply', async (event, data) => {
         return {
             status: 'success',
@@ -79,16 +96,7 @@ const keyReg = () => {
         };
     });
 
-    ipcMain.on('test-click', (event, data) => {
-        console.log('收到渲染進程的數據:', data);
-
-        event.reply('test-response', {
-            status: 'success',
-            data: '這是 send/on 的回應',
-            receivedData: data
-        });
-    });
-
+    // 關閉視窗時關閉應用
     app.on('window-all-closed', () => {
         if(process.platform !== 'darwin') app.quit();
     });

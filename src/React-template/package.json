@@ -3,11 +3,9 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "dev": "concurrently \"npm:electron\" \"npm:react\"",
-
-    "electron": "chcp 65001 && electron .",
     "react": "cd renderer && npx vite",
-
+    "electron": "chcp 65001 && electron .",
+    "dev": "concurrently \"npm:electron\" \"npm:react\"",
     "build-react": "cd renderer && npx vite build",
     "build": "cd renderer && npx vite build && cd ../ && electron-builder"
   },
@@ -36,6 +34,7 @@
   },
   "charset": "UTF-8",
   "dependencies": {
-    "electron-is-dev": "^3.0.1"
+    "electron-is-dev": "^3.0.1",
+    "sass": "^1.89.2"
   }
 }

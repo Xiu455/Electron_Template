@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react'
 
-function App() {
-  const [count, setCount] = useState(0)
+import './App.scss'
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const electron = window['electron'];  // 獲得後端溝通API
+
+function App(props){
+  let {
+    setting,
+    ...rest
+  } = props;
+  const [count, setCount] = useState(0);
+
+  const callBE = () => {
+    electron.send('send', 'Hello from frontend');
+  }
+
+  useEffect(() => {
+    electron.receive('backend-reply', (data) => {
+      console.log('收到後端回覆');
+      console.log(data);
+    });
+
+    electron.receive('backend-notify', (data) => {
+      console.log('主進程通知:', data);
+  });
+  },[]);
+
+  return (<>
+    <button onClick={() => setCount((count) => count + 1)}>
+      點擊次數: {count}
+    </button>
+
+    <button onClick={callBE}>
+      發送訊息到後端
+    </button>
+  </>)
 }
 
 export default App
