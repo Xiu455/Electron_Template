@@ -77,7 +77,7 @@ const keyReg = () => {
 
     // 接收渲染進程的訊息 並回覆
     ipcMain.on('send',(event, data) => {
-        console.log(`收到渲染進程的數據: ${new Date()}`);
+        console.log(`收到渲染進程的數據(${new Date()}):`);
         console.log(data);
 
         event.reply('backend-reply', {
