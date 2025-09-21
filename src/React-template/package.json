@@ -21,7 +21,10 @@
       "!.vscode",
       "build/"
     ],
-    "asar": false
+    "asar": false,
+	"win": {
+      "target": ["portable", "dir"]
+    },
   },
   "keywords": [],
   "author": "",
